@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup zsh"
+    brew install zsh
+    echo "ZDOTDIR=$HOME/.config/zsh" | tee $HOME/.zshenv
+
+    ln -sf ${DOTS}/zsh/zshrc ~/.config/zsh/.zshrc
+}
+
+setup

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup git"
+    brew install git
+    ln -sf ${DOTS}/git/config ~/.config/git/config
+    ln -sf ${DOTS}/git/commit-message ~/.config/git/commit-message
+}
+
+setup

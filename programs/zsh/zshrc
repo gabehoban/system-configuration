@@ -1,0 +1,140 @@
+# ------------------------------------------------------------------------------
+# - Path Config                                                                -
+# ------------------------------------------------------------------------------
+export PATH="$PATH:$HOME/.local/bin:$HOME/go/bin/"
+
+# ------------------------------------------------------------------------------
+# - Aliases                                                                    -
+# ------------------------------------------------------------------------------
+
+# Colorize output, add file type indicator, and put sizes in human readable format
+alias ls='ls -GFh'
+alias ll='ls -GFhl'
+alias la='ls -GFha'
+
+alias ..='cd ../'
+alias cp='cp -iv'
+alias mkdir='mkdir -pv'
+
+## Git related
+alias g='git'
+
+## feh
+alias feh="feh --auto-zoom --scale-down"
+
+# ------------------------------------------------------------------------------
+# - General Configurations                                                     -
+# ------------------------------------------------------------------------------
+setopt autocd
+
+# Disables the beep zsh would otherwise make when giving invalid input (such as
+# hitting backspace on an command line).
+setopt no_beep
+
+# History settings
+HISTFILE=$HOME/.cache/zsh_history
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt append_history         # Allow multiple terminal sessions to all append to one zsh command history
+setopt extended_history       # save timestamp of command and duration
+setopt inc_append_history     # Add comamnds as they are typed, do not wait until shell exit
+setopt hist_expire_dups_first # when trimming history, lose oldest duplicates first
+setopt hist_ignore_dups       # Do not write events to history that are duplicates of previous events
+setopt hist_ignore_space      # remove command line from history list when first character on the line is a space
+setopt hist_find_no_dups      # When searching history do not display results already cycled through twice
+setopt hist_reduce_blanks     # Remove extra blanks from each command line being added to history
+setopt hist_verify            # do not execute, just expand history
+setopt share_history          # imports new commands and appends typed commands to history
+setopt hist_ignore_all_dups   # Delete old recorded entry if new entry is a duplicate.
+setopt hist_save_no_dups      # Do not write duplicate entries in the history file.
+
+# Set editor
+export EDITOR=/usr/local/bin/nvim
+
+# ------------------------------------------------------------------------------
+# - Custom functions                                                           -
+# ------------------------------------------------------------------------------
+mkcd() { mkdir -p "$@" && cd "$@"; }      # Create a directory and cd to it afterwards
+
+# ------------------------------------------------------------------------------
+# - Syntax highlighting package                                                -
+# ------------------------------------------------------------------------------
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# ------------------------------------------------------------------------------
+# - Autosuggestion package
+# ------------------------------------------------------------------------------
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#808080'
+
+# ------------------------------------------------------------------------------
+# - Autocompletion settings                                                    -
+# ------------------------------------------------------------------------------
+autoload -Uz compinit && compinit
+
+setopt always_to_end          # When completing from the middle of a word, move the cursor to the end of the word
+setopt auto_menu              # show completion menu on successive tab press. needs unsetop menu_complete to work
+setopt auto_name_dirs         # any parameter that is set to the absolute name of a directory immediately becomes a name for that directory
+setopt complete_in_word       # Allow completion from within a word/phrase
+setopt auto_list              # automatically list choices on ambiguous completion
+
+unsetopt menu_complete        # do not autoselect the first completion entry
+
+# If the <tab> key is pressed with multiple possible options, print the
+# options.  If the options are printed, begin cycling through them.
+zstyle ':completion:*' menu select
+
+# Case insensitive completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Print the categories the completion options fit into.
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
+# correct if completion is not possible
+# enable approximate matches for completion
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
+
+# Use colors when outputting file names for completion options.
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion:*' squeeze-slashes true
+
+# Do not prompt to cd into current directory.
+# For example, cd ../<tab> should not prompt current directory.
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+# ------------------------------------------------------------------------------
+# - Visual settings                                                            -
+# ------------------------------------------------------------------------------
+autoload -U promptinit; promptinit
+prompt pure
+
+# ==============================================================================
+# = Run keychain so ssh-agent is shared between shells
+# ==============================================================================
+#eval $(keychain --eval --quiet --noask ~/.ssh/work)
+# If the command keychain is found and executable, evaluate it;
+[ -x "$(command -v keychain)" ] && eval $(keychain --eval --quiet --noask --agents ssh,gpg)
+
+# ==============================================================================
+# = GPG agent settings
+# ==============================================================================
+# As mendated by the manpage of gpg-agent
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Disable software flow control where ctrl+s freezes the terminal
+stty -ixon

@@ -1,0 +1,10 @@
+[alias]
+  commit = commit --signoff --patch
+  lg = log --graph --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset' -20
+[user]
+	name = Gabe Hoban
+	email = hello@gabehoban.com
+  signingkey = 0xE12BDCFE4AEF7082
+[commit]
+	template = ~/.config/git/commit-message
+	gpgsign = true

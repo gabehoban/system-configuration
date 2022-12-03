@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup tmux"
+    brew install tmux
+    ln -sf ${DOTS}/tmux/tmux.conf ~/.config/tmux/tmux.conf
+}
+
+setup

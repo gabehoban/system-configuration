@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup alacritty"
+    brew install --cask alacritty
+    ln -sf ${DOTS}/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+}
+
+setup

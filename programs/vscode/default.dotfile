@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup vscode"
+    brew install visual-studio-code-insiders
+    # ln -sf ${DOTS}/vscode/config ~/.config/git/config
+}
+
+setup

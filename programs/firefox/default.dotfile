@@ -1,0 +1,8 @@
+#!/bin/bash
+
+function setup() {
+    echo "    [PROGRAM]: Setup firefox"
+    brew install --cask homebrew/cask-versions/firefox-beta
+}
+
+setup
