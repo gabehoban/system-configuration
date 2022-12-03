@@ -133,8 +133,9 @@ prompt pure
 # = GPG agent settings
 # ==============================================================================
 # As mendated by the manpage of gpg-agent
-GPG_TTY=$(tty)
-export GPG_TTY
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
 # Disable software flow control where ctrl+s freezes the terminal
 stty -ixon
