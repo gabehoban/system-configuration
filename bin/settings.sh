@@ -73,12 +73,6 @@ defaults write com.apple.loginwindow TALLogoutSavesState -bool false
 # Disable Text input in status bar
 defaults write com.apple.TextInputMenu visible -bool false
 
-# Skim: turn off auto reload dialog, default to auto reload
-defaults write -app Skim SKAutoReloadFileUpdate -boolean true
-
-# Set iTerm2 preference folder
-defaults write -app iTerm PrefsCustomFolder "$HOME/Documents/github/dotfiles/macOS"
-
 # Disable the sound effects on boot
 # sudo nvram SystemAudioVolume=%00
 
